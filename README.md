@@ -1,5 +1,5 @@
 ## Github Page Clone 
-![home](src/public/home.png)
+![home](public/home.png)
 Install dependencies using
 
 ```
