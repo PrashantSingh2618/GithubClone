@@ -15,7 +15,7 @@ export default function SearchBar(props:Props){
         </div>
         <input
           className="search-bar"
-          placeholder="  is:issue is:open "
+          placeholder=" 🔍 is:issue is:open "
           style={{ fontSize: "14px" }}
           onChange={props.searchingFunction}
         ></input>
