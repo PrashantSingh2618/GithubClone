@@ -7,6 +7,8 @@ import ContributeMessage from "./components/ContributeMessage";
 import LoaderComponent from "./components/LoaderComponent";
 import "./index.css";
 import axios from "axios"
+import Navbar from "./components/Navbar"
+
 
 export interface GithubData {
   title: string;
@@ -15,6 +17,10 @@ export interface GithubData {
   user: {
     login: string;
   };
+  labels:[{
+    name: string;
+    color: string
+  }]
 }
 
 export default function App() {
@@ -22,7 +28,6 @@ export default function App() {
   const [data, setData] = useState<GithubData[]>([]);
   const [searchValue, updateSearchValue] = useState<string>("");
   const [page,setPage] = useState<number>(1);
-  const [fullData, setFullData] = useState([])
 
   const fetchData = () => {
     setPage(page=> page + 1)
@@ -38,9 +43,7 @@ export default function App() {
       setData(prev=>{
         return [...prev,...res.data]
       })
-      console.log(data)
       setStatus(true)
-      // return res
     })
     .catch(err=>{
       console.log("Something went wrong ... ")
@@ -56,13 +59,10 @@ export default function App() {
   window.onscroll = function(){
     if(window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight){
         fetchData();
+        // setStatus(false)
     }
   }
 
-  const loadMore = () =>{
-    setStatus(false)
-    fetchData();
-  }
 
   const handleChange = (event: { target: HTMLInputElement }) => {
     updateSearchValue(event.target.value);
@@ -72,6 +72,7 @@ export default function App() {
     <div className="app">
       {fetchStatus ? (
         <div className="rendered-app">
+          <Navbar/>
           <RepoHeader />
           <div className="search-and-list-container">
             <ContributeMessage />
@@ -93,16 +94,16 @@ export default function App() {
                         title={issue.title}
                         number={issue.number}
                         created_at={issue.created_at}
+                        labels={issue.labels}
                       />
                     </div>
                   );
                 })}
             </div>
-            <div className="load-more" onClick={loadMore}>Load More</div>
           </div>
 
         </div>
-      ) : null }
+      ) :<LoaderComponent/> }
     </div>
   );
 };
